@@ -1,0 +1,23 @@
+<div class="dashboard">
+  <header>
+    <h1>AgroTrack</h1>
+    <div class="user-info">
+      <span>Bonjour, {{username}}</span>
+      <button (click)="logout()">Déconnexion</button>
+    </div>
+  </header>
+
+  <nav>
+    <a routerLink="/dashboard/plants" routerLinkActive="active">Mes Plantes</a>
+    <a routerLink="/dashboard/notifications" routerLinkActive="active">Notifications</a>
+    <a routerLink="/dashboard/profile" routerLinkActive="active">Profil</a>
+  </nav>
+
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 AgroTrack</p>
+  </footer>
+</div>

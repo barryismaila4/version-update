@@ -1,0 +1,11 @@
+<div class="profile-container">
+  <h2>Mon Profil</h2>
+
+  <div *ngIf="user" class="profile-info">
+    <p><strong>Nom d'utilisateur:</strong> {{user.username}}</p>
+    <p><strong>Email:</strong> {{user.email}}</p>
+    <p><strong>Rôle:</strong> {{user.role}}</p>
+    <p><strong>Nombre de plantes:</strong> {{user.plants?.length || 0}}</p>
+    <p><strong>Nombre de notifications:</strong> {{user.notifications?.length || 0}}</p>
+  </div>
+</div>

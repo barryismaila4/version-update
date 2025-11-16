@@ -1,0 +1,39 @@
+<div class="notifications-container">
+  <h2>Mes Notifications</h2>
+
+  <button (click)="showAddForm()">Créer une notification</button>
+
+  <div *ngIf="showForm" class="notification-form">
+    <h3>Nouvelle notification</h3>
+    <form (ngSubmit)="createNotification()">
+      <input [(ngModel)]="newNotification.title" name="title" placeholder="Titre" required>
+      <textarea [(ngModel)]="newNotification.description" name="description" placeholder="Description"></textarea>
+      <input type="datetime-local" [(ngModel)]="newNotification.notificationDate" name="notificationDate" required>
+      <select [(ngModel)]="selectedPlantId" name="selectedPlantId">
+        <option value="0">Aucune plante</option>
+        <option *ngFor="let plant of plants" [value]="plant.id">{{plant.name}}</option>
+      </select>
+      <button type="submit">Créer</button>
+      <button type="button" (click)="cancelForm()">Annuler</button>
+    </form>
+  </div>
+
+  <div class="notifications-list">
+    <div *ngFor="let notification of notifications"
+         class="notification-item"
+         [class.unread]="!notification.isRead">
+      <div class="notification-content">
+        <h4>{{notification.title}}</h4>
+        <p>{{notification.description}}</p>
+        <div class="notification-meta">
+          <small>Date: {{notification.notificationDate | date:'medium'}}</small>
+          <small *ngIf="notification.plant">Plante: {{notification.plant.name}}</small>
+        </div>
+      </div>
+      <div class="actions">
+        <button *ngIf="!notification.isRead" (click)="markAsRead(notification.id)">Marquer comme lu</button>
+        <button (click)="deleteNotification(notification.id)">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>

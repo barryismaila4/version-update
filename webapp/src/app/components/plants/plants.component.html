@@ -1,0 +1,62 @@
+<div class="plants-container">
+  <h2>Mes Plantes</h2>
+
+  <button (click)="showAddForm()">Ajouter une plante</button>
+
+  <div *ngIf="showForm" class="plant-form">
+    <h3>{{editingPlant ? 'Modifier' : 'Ajouter'}} une plante</h3>
+    <form (ngSubmit)="savePlant()">
+      <input [(ngModel)]="newPlant.name" name="name" placeholder="Nom" required>
+      <input [(ngModel)]="newPlant.plantType" name="plantType" placeholder="Type">
+      <textarea [(ngModel)]="newPlant.description" name="description" placeholder="Description"></textarea>
+      <button type="submit">Sauvegarder</button>
+      <button type="button" (click)="cancelForm()">Annuler</button>
+    </form>
+  </div>
+
+  <div class="plants-list">
+    <div *ngFor="let plant of plants" class="plant-item">
+      <div class="plant-header">
+        <h4 (click)="showPlantDetails(plant)">{{plant.name}}</h4>
+        <span class="plant-type">{{plant.plantType}}</span>
+      </div>
+
+      <!-- Section Notifications de la plante -->
+      <div class="plant-notifications" *ngIf="plant.notifications && plant.notifications.length > 0">
+        <h5>📢 Notifications</h5>
+        <div *ngFor="let notification of plant.notifications"
+             class="notification-badge"
+             [class.unread]="!notification.isRead">
+          <div class="notification-info">
+            <span class="notification-title">{{notification.title}}</span>
+            <small class="notification-date">{{notification.notificationDate | date:'short'}}</small>
+          </div>
+          <button *ngIf="!notification.isRead"
+                  (click)="markNotificationAsRead(notification.id)"
+                  class="mark-read-btn">✓</button>
+        </div>
+      </div>
+
+      <div *ngIf="!plant.notifications || plant.notifications.length === 0" class="no-notifications">
+        <small>Aucune notification</small>
+      </div>
+
+      <div class="actions">
+        <button (click)="showEditForm(plant)">Modifier</button>
+        <button (click)="waterPlant(plant.id)">Arroser</button>
+        <button (click)="addNotificationToPlant(plant)">+ Notification</button>
+        <button (click)="deletePlant(plant.id)">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectedPlant" class="plant-details">
+    <h3>Détails de {{selectedPlant.name}}</h3>
+    <p><strong>Type:</strong> {{selectedPlant.plantType}}</p>
+    <p><strong>Description:</strong> {{selectedPlant.description}}</p>
+    <p><strong>Planté le:</strong> {{selectedPlant.plantingDate | date}}</p>
+    <p><strong>Dernier arrosage:</strong> {{selectedPlant.lastWatered | date}}</p>
+    <p><strong>Fréquence d'arrosage:</strong> {{selectedPlant.wateringFrequencyDays}} jours</p>
+    <button (click)="selectedPlant = null">Fermer</button>
+  </div>
+</div>
