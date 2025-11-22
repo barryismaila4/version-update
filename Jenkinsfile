@@ -4,6 +4,9 @@ pipeline {
         jdk 'jdk21'
         maven 'maven3'
     }
+    environment {
+        SONAR_TOKEN = credentials('sonar-token')
+    }
     stages {
         stage('Build') {
             steps {
@@ -12,10 +15,10 @@ pipeline {
                 sh 'mvn clean compile -DskipTests=true'
             }
         }
-        stage('Test') {
+        stage('SonarQube Analysis') {
             steps {
-                echo 'Tests skipped (MySQL not available in Jenkins environment)'
-                sh 'echo "Tests would run here with MySQL available"'
+                echo 'Analyzing code quality with SonarQube...'
+                sh 'mvn sonar:sonar -Dsonar.projectKey=version-update -Dsonar.host.url=http://localhost:9000 -Dsonar.login=$SONAR_TOKEN -DskipTests=true'
             }
         }
         stage('Package') {
